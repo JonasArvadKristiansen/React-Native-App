@@ -45,7 +45,7 @@ export default function App() {
           All interaction for the component are disabled.
         </Text>
         <Button
-          title="Press me"
+          title="Press wme"
           disabled
           onPress={() => Alert.alert('Cannot press this one')}
         />

@@ -1,40 +1,33 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Button,
-  View,
-  SafeAreaView,
-  Text,
-  Alert,
+import { StyleSheet, Button, View, SafeAreaView, Text, Alert,
 } from 'react-native';
-import Constants from 'expo-constants';
 
 
 
 export default function App() {
   return (
     <View>
-    <Text style={styles.text}>
       Her det en test jeg prøver
+    <Text style={styles.text}>
      
     </Text>
-
-    <Button
-          title="Press me"
+    </View>
           onPress={() => Alert.alert('You are gay')}
           backgroundColor=""
         />
-    </View>
+    <Button
+          title="Press me"
+
   );
 }
 
 const styles = StyleSheet.create({
-  text: {
+    padding: 30,
+    backgroundColor: "yellow",
+    color: "red",
     marginTop: Constants.statusBarHeight,
     textAlign: "center",
-    color: "red",
-    backgroundColor: "yellow",
-    padding: 30,
+  text: {
   },
   
 });

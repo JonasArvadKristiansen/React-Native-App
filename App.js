@@ -1,8 +1,11 @@
 import React, { useState, Component } from 'react';
 import { StyleSheet,Button,View,TextInput,Text, Alert,
   
+
+import React from 'react';
+import { StyleSheet, Button, View, SafeAreaView, Text, Alert,
+
 } from 'react-native';
-import Constants from 'expo-constants';
 
 
 export default class App extends Component {
@@ -23,6 +26,7 @@ export default class App extends Component {
 
   render() {
   return (
+
     <View style={styles.Continaer}>
       <Text style={styles.text}>
         Skriv den by du ville gerne se vejert for.
@@ -41,6 +45,19 @@ export default class App extends Component {
       </Text>
       <Button title='Get Data Using GET' onPress={this.getDataUsingGet}/>
     </View>
+    <View>
+      
+    <Text style={styles.text}>
+     Her det en test jeg prøver
+    </Text>
+    
+    <Button
+          onPress={() => Alert.alert('You are gay')}
+          backgroundColor=""
+          title="Press me"
+        />
+    
+   </View>       
   );
   }
 }
@@ -64,6 +81,11 @@ const styles = StyleSheet.create({
   Continaer:{
     alignItems: "center",
     justifyContent: "center",
-    
+    padding: 30,
+    backgroundColor: "yellow",
+    color: "red",
+    marginTop: Constants.statusBarHeight,
+    textAlign: "center",
+  text: {
   },
 });

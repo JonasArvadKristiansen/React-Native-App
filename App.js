@@ -1,66 +1,68 @@
 import React, { useState, Component } from 'react';
 import { StyleSheet,Button,View,TextInput,Text, Alert,
   
+} 
+from 'react-native';
+import Constants from 'expo-constants';
 
-import React from 'react';
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert,
-
-} from 'react-native';
+class App extends Component {
+  state={temp:'',by:'',testing:''}
 
 
-export default class App extends Component {
-
-  getDataUsingGet(){
-    fetch('http://api.openweathermap.org/data/2.5/weather?q=viborg&appid=4ca58c02db0e5bd08cba675c246b5762')
+  getDataUsingGet = () => {
+    var okay = "Viborg";
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${okay}&appid=4ca58c02db0e5bd08cba675c246b5762&units=metric`)
     .then((response) => response.json())
+    
     .then((responseJson) => {
-        alert(JSON.stringify(responseJson));
-        console.log(responseJson);
-        
+      alert(JSON.stringify(responseJson));
+      
+
+      this.setState({temp: responseJson.main.temp}); 
+      this.setState({by: responseJson.name});   
+      
+     // console.log(responseJson)
     })
+   
     .catch((error) => {
-        alert(JSON.stringify(error));
-        console.error(error);
+      alert(JSON.stringify(error));
+      console.error(error);
     });
   }
 
-  render() {
-  return (
-
+  render() { 
+    
+    return (
+      
     <View style={styles.Continaer}>
+
       <Text style={styles.text}>
         Skriv den by du ville gerne se vejert for.
       </Text>
 
-    <TextInput
+    <TextInput id='hello'
     style={styles.input}
     placeholder=' Skriv et by navn'
+   onChange={() => this.setState.hello}
+   
     />
-
+    
       <Text style={styles.Vejertekst}>
-        Her er vejert for: 
+        Her er vejert for: {this.state.by}
       </Text>
-      <Text>
-        
-      </Text>
-      <Button title='Get Data Using GET' onPress={this.getDataUsingGet}/>
-    </View>
+
     <View>
-      
-    <Text style={styles.text}>
-     Her det en test jeg prøver
-    </Text>
-    
-    <Button
-          onPress={() => Alert.alert('You are gay')}
-          backgroundColor=""
-          title="Press me"
-        />
-    
-   </View>       
+     <Text> 
+      der her er en test  "{this.state.temp}"
+      </Text>
+    </View>
+
+      <Button title='Test' onPress={this.getDataUsingGet} />
+    </View>
   );
   }
 }
+
 
 const styles = StyleSheet.create({
   text: {
@@ -78,14 +80,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#E9EBEE",
     marginTop: 16,
   },
+
   Continaer:{
     alignItems: "center",
     justifyContent: "center",
-    padding: 30,
-    backgroundColor: "yellow",
-    color: "red",
-    marginTop: Constants.statusBarHeight,
-    textAlign: "center",
-  text: {
+    
   },
 });
+
+export default App;

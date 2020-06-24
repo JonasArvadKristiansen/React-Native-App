@@ -1,67 +1,97 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet,Button,View,TextInput,Text, Alert,
-  
-
-import React from 'react';
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert,
-
-} from 'react-native';
-
+import { StyleSheet, Button, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import Constants from 'expo-constants';
+import Weather from './Weather';
+import API_KEY from './WeatherApiKey';
 
 export default class App extends Component {
 
-  getDataUsingGet(){
-    fetch('http://api.openweathermap.org/data/2.5/weather?q=viborg&appid=4ca58c02db0e5bd08cba675c246b5762')
+  state = {
+    isLoading: false,
+    temperature: '',
+    weatherCondition: 0,
+    error: null
+  };
+
+findCoodinates = () => {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const location = position;
+      this.setState({'location': location.coords.latitude + ' , ' + location.coords.longitude});
+
+},
+    error => Alert.alert(error.message),
+    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+  );
+};
+componentDidMount() {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      this.fetchWeather(position.coords.latitude, position.coords.longitude);
+    },
+    
+    error => {
+      this.setState({
+        error: 'Error Getting Weather Conditions'
+      });
+    }
+  );
+}
+
+fetchWeather() {
+  console.log(location);
+  fetch(
+    'http://api.openweathermap.org/data/2.5/weather?' + this.state.location +'&appid=65c1502c5bc8085bcbcd4823f5657a05&units=metric'
+  )
+    .then(res => res.json())
+    .then(json => {
+      this.setState({
+        temperature: json.main.temp,
+        weatherCondition: json.weather[0].main,
+        isLoading: false
+      });
+    });
+}
+/*
+    getDataUsingGet(){
+    fetch('http://api.openweathermap.org/data/2.5/weather?q=Viborg&appid=4ca58c02db0e5bd08cba675c246b5762')
     .then((response) => response.json())
     .then((responseJson) => {
         alert(JSON.stringify(responseJson));
         console.log(responseJson);
-        
     })
     .catch((error) => {
         alert(JSON.stringify(error));
         console.error(error);
     });
   }
+*/
 
   render() {
+  const { isLoading } = this.state;
   return (
-
-    <View style={styles.Continaer}>
-      <Text style={styles.text}>
-        Skriv den by du ville gerne se vejert for.
-      </Text>
-
-    <TextInput
-    style={styles.input}
-    placeholder=' Skriv et by navn'
-    />
-
-      <Text style={styles.Vejertekst}>
-        Her er vejert for: 
-      </Text>
-      <Text>
+    <View style={styles.Continaer}>  
+  <View>
+    <TouchableOpacity onPress={this.findCoodinates}>
+      <Text> find my Coordinates</Text>
+      <Text>Location: {this.state.location} </Text>
+    </TouchableOpacity>
+  </View>
+  
+  <View style={styles.container}>
         
-      </Text>
-      <Button title='Get Data Using GET' onPress={this.getDataUsingGet}/>
-    </View>
-    <View>
+  <View style={styles.container}>
+				{isLoading ? <Text>Fetching The Weather</Text> : <Weather
+	weather={this.state.weatherCondition}
+	temperature={this.state.temperature}
+/>}
+			</View>
       
-    <Text style={styles.text}>
-     Her det en test jeg prøver
-    </Text>
-    
-    <Button
-          onPress={() => Alert.alert('You are gay')}
-          backgroundColor=""
-          title="Press me"
-        />
-    
-   </View>       
-  );
+     </View>   
+  </View>
+    );
   }
 }
-
 const styles = StyleSheet.create({
   text: {
     marginTop: Constants.statusBarHeight + 10,
@@ -82,10 +112,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 30,
-    backgroundColor: "yellow",
+    backgroundColor: "orange",
     color: "red",
     marginTop: Constants.statusBarHeight,
     textAlign: "center",
-  text: {
-  },
-});
+  }
+  });
